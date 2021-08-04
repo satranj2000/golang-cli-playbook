@@ -11,8 +11,7 @@ import (
 )
 
 func TestModule1CheckEnvGOOS(t *testing.T) {
-	found := OpenFileAndFindNthString("module1.txt", 0, "GOOS")
-
+	found := OpenFileAndFindNthString("module1.txt", 0, "set GOOS")
 	if !found {
 		t.Errorf("'go env' does not work as expected")
 	}
@@ -47,7 +46,9 @@ func OpenFileAndFindString(filename string, expected string) bool {
 	scanner.Split(bufio.ScanLines)
 
 	for scanner.Scan() {
+
 		t := scanner.Text()
+
 		trimmed := strings.Trim(t, " ")
 		if trimmed == "" {
 			continue
@@ -69,7 +70,6 @@ func OpenFileAndFindNthString(filename string, nth int, expected string) bool {
 		log.Fatal(err)
 	}
 	defer f.Close()
-
 	scanner := bufio.NewScanner(f)
 	scanner.Split(bufio.ScanLines)
 
@@ -82,7 +82,9 @@ func OpenFileAndFindNthString(filename string, nth int, expected string) bool {
 
 		// matching logic
 		ss := strings.Split(trimmed, "=")
-		if ss[nth] == expected {
+		//println(" len of each split value vs expected is - ", len(ss[nth]), len(expected), ss[nth], expected)
+		cval := strings.Compare(expected, ss[nth])
+		if cval == 0 {
 			return true
 		}
 	}
