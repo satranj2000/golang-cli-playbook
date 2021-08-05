@@ -38,6 +38,6 @@ func OpenFileAndCountLines(filename string) int {
 	for scanner.Scan() {
 		number++
 	}
-
+	print(number)
 	return number
 }
